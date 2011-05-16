@@ -1,0 +1,58 @@
+<% content_for :head do %>
+<style>
+	#confirm { margin-top: 200px; }
+</style>
+<% end %>
+<div style=text-align:center;>
+	<input id=confirm type=submit value=Submit />
+</div>
+<% content_for :script do %>
+<script>
+	var lastPos = {}
+	$(document).mousemove(function(e) {
+		var x1 = e.pageX, y1 = e.pageY;
+		var x2 = $('#confirm').offset().left;
+		var y2 = $('#confirm').offset().top;
+
+		var xDis = Math.abs(x1 - x2) / 100;
+		var yDis = Math.abs(y1 - y2) / 100;
+
+		// console.log('x1 ' + x1 + ' ' + 'y1 ' + y1);
+		// console.log('x2 ' + x2 + ' ' + 'y2 ' + y2);
+
+
+		// console.log('xDis ' + xDis);
+		//console.log('yDis ' + yDis);
+
+		var newXPos, newYPos;
+		// right of button
+		if (x1 > x2) {
+			newXPos = x2 - xDis;
+		} else {
+			newXPos = x2 + xDis;
+		}
+		// below button
+		if (y1 > y2) {
+			newYPos = y2 - yDis;
+		} else {
+			newYPos = y2 + yDis;
+		}
+
+		// console.log('newXPos ' + newXPos);
+		//console.log('newYPos ' + newYPos);
+
+		$('#confirm').offset({
+			'left': newXPos,
+			'top': newYPos
+		});
+
+		lastPos.left = x1;
+		lastPos.top = y1;
+		//distanceBetweenTwoElements(x1, y1, x2, y2);
+	});
+
+	function distanceBetweenTwoElements(x1, y1, x2, y2) {
+		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2-y1), 2))
+	}
+</script>
+<% end %>

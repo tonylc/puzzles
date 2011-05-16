@@ -1,0 +1,6 @@
+development:
+  adapter: mysql
+  database: puzzles
+  username: root
+  password:
+  host: localhost
