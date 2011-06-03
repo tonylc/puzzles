@@ -10,10 +10,14 @@ describe Sequence do
   it 'should find the next geometric sequence' do
     Sequence.find_sequence([2,4,8,16]).should == 32.0
     Sequence.find_sequence([2.25,2.8125,3.515625,4.39453125]).should == 5.4931640625
-
   end
 
   it 'should return nil for error in a sequence' do
     Sequence.find_sequence([2.25,2.8125,3.515625,1]).should be_nil
+  end
+
+  it 'should handle 0 case' do
+    Sequence.find_sequence([0,1,2,3]).should == 4
+    Sequence.find_sequence([0,0,0,0]).should == 0
   end
 end
