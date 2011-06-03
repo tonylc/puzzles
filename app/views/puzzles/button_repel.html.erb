@@ -3,56 +3,103 @@
 	#confirm { margin-top: 200px; }
 </style>
 <% end %>
+
 <div style=text-align:center;>
-	<input id=confirm type=submit value=Submit />
+	<input id='confirm' type='submit' value='Submit'/>
 </div>
+
 <% content_for :script do %>
 <script>
-	var lastPos = {}
+	var buttonWidth, buttonHeight;
+	var lastDistance = 999999999999999;
+	$(function() {
+		buttonWidth = $('#confirm').width();
+		buttonHeight = $('#confirm').height();
+	});
 	$(document).mousemove(function(e) {
 		var x1 = e.pageX, y1 = e.pageY;
 		var x2 = $('#confirm').offset().left;
 		var y2 = $('#confirm').offset().top;
 
-		var xDis = Math.abs(x1 - x2) / 100;
-		var yDis = Math.abs(y1 - y2) / 100;
+		var xDis = Math.abs(x1 - x2);// / 100;
+		var yDis = Math.abs(y1 - y2);// / 100;
 
-		// console.log('x1 ' + x1 + ' ' + 'y1 ' + y1);
-		// console.log('x2 ' + x2 + ' ' + 'y2 ' + y2);
+		//console.log('x1 ' + x1 + ' ' + 'y1 ' + y1);
+		//console.log('x2 ' + x2 + ' ' + 'y2 ' + y2);
 
-
-		// console.log('xDis ' + xDis);
-		//console.log('yDis ' + yDis);
+		console.log('xDis ' + xDis);
+		console.log('yDis ' + yDis);
 
 		var newXPos, newYPos;
+		var movingXDis = movingDistance(xDis);
+		var movingYDis = movingDistance(yDis);
 		// right of button
 		if (x1 > x2) {
-			newXPos = x2 - xDis;
+			newXPos = x2 - movingXDis;
 		} else {
-			newXPos = x2 + xDis;
+			newXPos = x2 + movingXDis;
 		}
 		// below button
 		if (y1 > y2) {
-			newYPos = y2 - yDis;
+			newYPos = y2 - movingYDis;
 		} else {
-			newYPos = y2 + yDis;
+			newYPos = y2 + movingYDis;
 		}
 
-		// console.log('newXPos ' + newXPos);
-		//console.log('newYPos ' + newYPos);
+		var windowWidth = window.innerWidth;
+		var windowHeight = window.innerHeight;
 
-		$('#confirm').offset({
-			'left': newXPos,
-			'top': newYPos
-		});
+		if (newXPos > windowWidth) {
+			newXPos = windowWidth - buttonWidth;
+		}
+		if (newYPos > windowHeight) {
+			newYPos = windowHeight - buttonHeight;
+		}
 
-		lastPos.left = x1;
-		lastPos.top = y1;
-		//distanceBetweenTwoElements(x1, y1, x2, y2);
+		var newXPosEnd = newXPos + buttonWidth;
+		var newYPosEnd = newYPos + buttonHeight;
+
+		console.log('newXPos ' + newXPos);
+		console.log('newYPos ' + newYPos);
+
+		var curDistance = distanceBetweenTwoElements(x1, y1, x2, y2);
+		// within bounds of window and you are actually moving towards button
+		if (curDistance < lastDistance) {
+			// move the button!
+		 	if (newXPos > 0 && newXPosEnd <= windowWidth) {
+				$('#confirm').offset({'left': newXPos});
+			}
+		 	if (newYPos > 0 && newYPosEnd <= windowHeight) {
+				$('#confirm').offset({'top': newYPos});
+			}
+		}
+		lastDistance = curDistance;
 	});
 
 	function distanceBetweenTwoElements(x1, y1, x2, y2) {
 		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2-y1), 2))
+	}
+
+	// the closer you are, the farther it moves
+	function movingDistance(distance) {
+		var newDistance;
+		if (distance < 10) {
+			newDistance = 1;
+		} else if (distance < 100) {
+			newDistance = 0.5;
+		} else if (distance < 200) {
+			newDistance = 0.04;
+		}	else if (distance < 300) {
+			newDistance = 0.03;
+		}	else if (distance < 400) {
+			newDistance = 0.02;
+		} else if (distance < 500) {
+			newDistance = 0.01;
+		} else {
+			newDistance = 0.0001;
+		}
+		console.log('newDistance * distance ' + newDistance * distance);
+		return newDistance * distance;
 	}
 </script>
 <% end %>
