@@ -2,7 +2,16 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
 gem 'mysql'
-gem 'rspec', '2.6.0'
+
+group :test do
+  gem "mocha", "0.9.9"
+  gem "rspec", "2.1.0"
+  gem "rspec-rails", "2.1.0"
+  gem "rspec-core", "2.1.0"
+  gem "rspec-expectations", "2.1.0"
+  gem "rspec-mocks", "2.1.0"
+#  gem 'spork', '~> 0.9.0.rc'
+end
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
