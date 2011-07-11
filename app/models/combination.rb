@@ -10,4 +10,4 @@ class Combination
   end
 end
 
-Combination.combinations('ABCDE')
+#Combination.combinations('ABCDE')
