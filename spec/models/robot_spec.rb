@@ -34,6 +34,12 @@ describe Robot do
     r.process_commands
     r.send(:return_position).should == [nil,nil,nil]
   end
+  
+  it 'should ignore invalid place command' do
+    r = Robot.new(["PLACE 7,6,NORTH","MOVE","RIGHT","REPORT"])
+    r.process_commands
+    r.send(:return_position).should == [nil,nil,nil]
+  end
 
   it 'should not fall off table' do
     r = Robot.new(["PLACE 0,0,NORTH",

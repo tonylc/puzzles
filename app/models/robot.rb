@@ -35,7 +35,7 @@ class Robot
       begin
         klass_str = "Robot::#{command_str.capitalize}Command"
         klass = klass_str.constantize
-        command_class = klass_str == "Robot::PlaceCommand" ? klass.new(positions) : klass.new
+        command_class = (klass_str == "Robot::PlaceCommand") ? klass.new(positions) : klass.new
       rescue Exception => e
         command_class = Robot::UnknownCommand.new
       end
