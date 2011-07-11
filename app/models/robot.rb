@@ -1,23 +1,18 @@
-# ASSUMPTIONS:
-# 1) Place commands are assumed to be the first command, but is not validated
-# to be the initial command
-# 2) If place commands are issued multiple times, it will cause the
-# robot to "teleport" to that positon
-# 3) If the Place command initializes the robot off of the table,
-# the robot will not move
-
 class Robot
   attr_reader :x,:y,:f
 
   def initialize(command_string_array)
     @commands = initialize_commands(command_string_array)
+    @robot_initialized = false
   end
 
   def process_commands
     @commands.each do |command|
+      next unless command.is_a?(Robot::PlaceCommand) || @robot_initialized
       x,y,f = command.process(@x,@y,@f)
       if valid_position?(x,y)
         set_positions!(x,y,f)
+        @robot_initialized = true
       end
     end
   end
@@ -56,7 +51,7 @@ class Robot
   class Command
     attr_reader :x, :x, :f
     DIRECTIONS = [:NORTH, :WEST, :SOUTH, :EAST]
-    
+
     def initialize
     end
 

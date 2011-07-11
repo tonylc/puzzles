@@ -13,6 +13,26 @@ describe Robot do
     r = Robot.new(["PLACE 1,2,EAST", "MOVE", "MOVE", "LEFT", "MOVE", "REPORT"])
     r.process_commands
     r.send(:return_position).should == [3,3,:NORTH]
+
+    r = Robot.new(["LEFT", "MOVE", "RIGHT",
+                  "PLACE 0,0,NORTH",
+                  "MOVE", "MOVE", "RIGHT",
+                  "REPORT", #0,2,EAST
+                  "PLACE 2,2,SOUTH",
+                  "RIGHT", "MOVE", "MOVE", "MOVE",
+                  "REPORT", #0,2,WEST
+                  "PLACE 4,5,WEST",
+                  "MOVE","MOVE","MOVE","LEFT",
+                  "REPORT" #1,5,SOUTH
+                  ])
+    r.process_commands
+    r.send(:return_position).should == [1,5,:SOUTH]
+  end
+  
+  it 'should ignore all commands until a valid place command' do
+    r = Robot.new(["LEFT","MOVE","RIGHT","REPORT"])
+    r.process_commands
+    r.send(:return_position).should == [nil,nil,nil]
   end
 
   it 'should not fall off table' do
@@ -78,8 +98,12 @@ describe Robot do
     it 'should process PLACE command' do
       c = Robot::PlaceCommand.new("0,1,NORTH")
       c.process(nil,nil,nil).should == [0,1,:NORTH]
-      
-      c = Robot::PlaceCommand.new("0,1,NORTH")
+
+      c = Robot::PlaceCommand.new("2,2,WEST")
+      c.process(3,5,:SOUTH).should == [2,2,:WEST]
+
+      c = Robot::PlaceCommand.new("7,6,WEST")
+      c.process(nil,nil,nil).should == [7,6,:WEST]
     end
 
     it 'should process MOVE command' do
