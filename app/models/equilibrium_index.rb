@@ -34,3 +34,23 @@ def equi ( arr )
     end
     return -1
 end
+
+# java soln
+# class Solution {
+#   int equi ( int[] A ) {
+#     long sum = 0;
+#     for (int i = 0; i < A.length; i++) {
+#       sum += A[i];
+#     }
+#
+#     long left_sum = 0;
+#     for (int i = 0; i < A.length; i++) {
+#       sum -= A[i];
+#       if (sum == left_sum) {
+#         return i;
+#       }
+#       left_sum += A[i];
+#     }
+#     return -1;
+#   }
+# }
