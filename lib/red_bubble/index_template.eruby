@@ -1,0 +1,31 @@
+<% title ||= 'Ape Process' %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    nav { margin: 10px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><%= title %></h1>
+    <nav>
+			<ul>
+			<% items.each do |item_name| %>
+				<li><a href='<%= item_name %>.html'><%= item_name %></a>
+			<% end %>
+			</ul>
+    </nav>
+  </header>
+
+	<ul>
+		<% p "******* thumbnails #{thumbnails.inspect}"%>
+		<% thumbnails.each do |thumbnail| %>
+			<li><img src="<%= (thumbnail) %>"/>
+		<% end %>
+	</ul>
+
+	<script src=https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js/>
+</body>
+</html>
