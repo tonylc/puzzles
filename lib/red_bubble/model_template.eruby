@@ -16,14 +16,6 @@
     </nav>
   </header>
 
-	<div id='content'>
-		<h1><%= title %></h1>
-		<ul class='works'>
-			<% model.first_ten_works.each do |thumbnail| %>
-				<li><img src="<%= (thumbnail) %>"/>
-			<% end %>
-		</ul>
-	</div>
-
+	<%= Erubis::Eruby.new(File.read('thumbnails.eruby')).result(:title => title, :thumbnails => model.first_ten_works) %>
 </body>
 </html>
