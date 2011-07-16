@@ -1,30 +1,33 @@
-<% title ||= 'Ape Process' %>
+<% title = 'Processed Photos' %>
 <!DOCTYPE html>
 <html>
 <head>
   <title><%= title %></title>
-  <style>
-    nav { margin: 10px; }
-  </style>
+	<link href='common.css' rel='stylesheet'>
 </head>
 <body>
   <header>
-    <h1><%= title %></h1>
     <nav>
 			<ul>
-			<% items.each do |item_name| %>
-				<li><a href='<%= item_name %>.html'><%= item_name %></a>
-			<% end %>
+				<li class='items-nav'>
+					<a class='items-nav-link'>Camera Makes</a>
+					<ul class='drill-down'>
+					<% makes.each do |make| %>
+						<li><a href='<%= make.name %>.html'><%= make.name %></a>
+					<% end %>
+					</ul>
 			</ul>
     </nav>
   </header>
 
-	<ul>
-		<% p "******* thumbnails #{thumbnails.inspect}"%>
-		<% thumbnails.each do |thumbnail| %>
-			<li><img src="<%= (thumbnail) %>"/>
-		<% end %>
-	</ul>
+	<div id='content'>
+		<h1><%= title %></h1>
+		<ul class='works'>
+			<% thumbnails.each do |thumbnail| %>
+				<li><img src="<%= (thumbnail) %>"/>
+			<% end %>
+		</ul>
+	</div>
 
 	<script src=https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js/>
 </body>

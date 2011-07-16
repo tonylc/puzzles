@@ -1,31 +1,29 @@
-<% title ||= 'Ape Process' %>
+<% title = "#{model.make_name} - #{model.name}" %>
 <!DOCTYPE html>
 <html>
 <head>
   <title><%= title %></title>
-  <style>
-    nav { margin: 10px; }
-  </style>
+	<link href='common.css' rel='stylesheet'>
 </head>
 <body>
   <header>
-    <h1><%= title %></h1>
     <nav>
 			<ul>
-			<% items.each do |item_name| %>
-				<li><a href='<%= item_name %>.html'><%= item_name %></a>
-			<% end %>
-			</ul>
+				<li>
+    			<a href='index.html'>&laquo; Back to Home</a>
+				<li>
+					<a href='<%= model.make_name %>.html'>Back to Model</a>
     </nav>
   </header>
 
-	<ul>
-		<% p "******* thumbnails #{thumbnails.inspect}"%>
-		<% thumbnails.each do |thumbnail| %>
-			<li><img src="<%= (thumbnail) %>"/>
-		<% end %>
-	</ul>
+	<div id='content'>
+		<h1><%= title %></h1>
+		<ul class='works'>
+			<% model.first_ten_works.each do |thumbnail| %>
+				<li><img src="<%= (thumbnail) %>"/>
+			<% end %>
+		</ul>
+	</div>
 
-	<script src=https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js/>
 </body>
 </html>
