@@ -1,11 +1,17 @@
 require 'rubygems'
 require 'nokogiri'
 require 'erubis'
-require 'helpers'
 
 if ARGV.size != 2
   p "Usage: ruby batch_processor.rb <input_file> <output_directory>"
   exit
+end
+
+# straight copied from rails
+class String #:nodoc:
+  def blank?
+    self !~ /\S/
+  end
 end
 
 module Works
