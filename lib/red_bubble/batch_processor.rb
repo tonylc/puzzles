@@ -14,9 +14,23 @@ module Works
   end
 end
 
-class AllMakes
+class BatchProcess
+  include Works
+
   def initialize
     @make_hash = {}
+    @works = []
+  end
+
+  def parse_work(work_obj)
+    make_name = work_obj.css('exif make').text
+    model_name = work_obj.css('exif model').text
+    uri = work_obj.css('urls url:first').text
+
+    uri = uri.blank? ? nil : uri
+    @works << uri
+
+    add_work(make_name, model_name, uri) unless make_name.blank?
   end
 
   def add_work(make_name, model_name, thumb_src)
@@ -37,16 +51,18 @@ class Make
 
   def initialize(make_name)
     @name = make_name
-    @works = []
     @models_hash = {}
+    @works = []
   end
 
-  def add_work(model_name, thumb_src)
-    if @models_hash[model_name].nil?
-      @models_hash[model_name] = Model.new(@name, model_name)
+  def add_work(model_name, uri)
+    if !model_name.nil?
+      if @models_hash[model_name].nil?
+        @models_hash[model_name] = Model.new(@name, model_name)
+      end
+      @models_hash[model_name].add_work(uri)
     end
-    @models_hash[model_name].add_work(thumb_src)
-    @works << thumb_src
+    @works << uri
   end
 
   def models
@@ -64,39 +80,26 @@ class Model
     @works = []
   end
 
-  def add_work(thumb_src)
-    @works << thumb_src
+  def add_work(uri)
+    @works << uri
   end
 end
 
 input_file = ARGV.first
 output_dir = ARGV.last
-
-f = File.open(input_file)
-doc = Nokogiri::XML(f)
-f.close
-
-all_makes = AllMakes.new
-all_works = []
+process = BatchProcess.new
+doc = Nokogiri::XML(File.open(input_file))
 
 doc.css('work').each do |work|
-  make_tag = work.css('exif make').to_s
-  model_tag = work.css('exif model').to_s
-  uri = work.css('urls url:first').to_s
-  uri = uri.blank? ? nil : strip_tags('url', uri)
-  all_works << uri
-
-  if !make_tag.blank? && !model_tag.blank?
-    all_makes.add_work(strip_tags('make', make_tag), strip_tags('model', model_tag), uri)
-  end
+  process.parse_work(work)
 end
 
 File.open("#{output_dir}/index.html", 'w') do |f|
   eruby = Erubis::Eruby.new(File.read('index_template.eruby'))
-  f.write(eruby.result(:makes => all_makes.makes, :thumbnails => all_works.compact.slice(0,10)))
+  f.write(eruby.result(:makes => process.makes, :thumbnails => process.first_ten_works))
 end
 
-all_makes.makes.each do |make|
+process.makes.each do |make|
   File.open("#{output_dir}/#{make.name}.html", 'w') do |f|
     eruby = Erubis::Eruby.new(File.read('make_template.eruby'))
     f.write(eruby.result(:make => make))
