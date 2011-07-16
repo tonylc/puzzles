@@ -3,7 +3,7 @@
 <html>
 <head>
   <title><%= title %></title>
-	<link href='common.css' rel='stylesheet'>
+	<link href='<%= File.expand_path(File.dirname(__FILE__)) %>/common.css' rel='stylesheet'>
 </head>
 <body>
   <header>
