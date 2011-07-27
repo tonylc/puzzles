@@ -1,8 +1,0 @@
-<div id='content'>
-	<h1><%= title %></h1>
-	<ul class='works'>
-		<% thumbnails.each do |thumbnail| %>
-			<li><img src="<%= (thumbnail) %>"/>
-		<% end %>
-	</ul>
-</div>
