@@ -1,0 +1,20 @@
+/* default */
+body { font-family: Arial, sans-serif; font-size: 12px; background: #F8F8F8; }
+ul { margin: 0; padding: 0; list-style: none; }
+a, a:visited { color: #028; text-decoration: none; }
+a:hover { color: #C2002A; text-decoration: underline; }
+h1 { font-size: 20px; }
+header { position: fixed; top: 0; background: white; width: 100%; border-bottom: 1px solid #EEE; }
+
+/* navigation */
+nav { margin: 10px 0; display: block; height: 15px; }
+nav ul li { float: left; margin-right: 20px; }
+.items-nav { cursor: default; text-decoration: none; }
+.items-nav:hover { color: #028; }
+.items-nav:hover .drill-down, .drill-down:hover { display: block; }
+.items-nav .items-nav-link:hover { text-decoration: none;}
+.drill-down { display: none; padding: 10px; position: absolute; z-index: 1; background: white; list-style: none; border: 1px solid #EEE; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+
+/* content */
+#content { margin-top: 40px; }
+.works img { float: left; margin: 5px; width: 135px; }

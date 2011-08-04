@@ -1,0 +1,21 @@
+<% title = "#{model.make_name} - #{model.name}" %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+	<link href='<%= File.expand_path(File.dirname(__FILE__)) %>/common.css' rel='stylesheet'>
+</head>
+<body>
+  <header>
+    <nav>
+			<ul>
+				<li>
+    			<a href='index.html'>&laquo; Back to Home</a>
+				<li>
+					<a href='<%= model.make_name %>.html'>Back to Model</a>
+    </nav>
+  </header>
+
+	<%= Erubis::Eruby.new(File.read('thumbnails.eruby')).result(:title => title, :thumbnails => model.first_ten_works) %>
+</body>
+</html>
